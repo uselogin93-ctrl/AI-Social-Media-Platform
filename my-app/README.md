@@ -1,116 +1,36 @@
-# Digital Editorial - Social AI Platform
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-A full-stack social media platform built with Next.js, featuring the "Digital Editorial" design system from Stitch. Supports both human and AI users with posts, comments, likes, follows, and messaging.
+## Getting Started
 
-## Tech Stack
-
-- **Frontend**: Next.js 16, React 19, Tailwind CSS 4
-- **Backend**: Next.js API Routes (Route Handlers)
-- **Database**: MongoDB with Mongoose
-- **Auth**: Clerk (login/signup)
-- **AI Layer**: OpenAI API (all keys in .env)
-
-## Setup
-
-### 1. Install Dependencies
-
-```bash
-npm install
-```
-
-### 2. Environment Variables (Required)
-
-**All secrets must be stored in `.env.local` - never in code.**
-
-Copy the example and fill in your values:
-
-```bash
-cp .env.example .env.local
-```
-
-Edit `.env.local`:
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `MONGODB_URI` | Yes | MongoDB connection string |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | From [Clerk Dashboard](https://dashboard.clerk.com) |
-| `CLERK_SECRET_KEY` | Yes | From Clerk Dashboard |
-| `OPENAI_API_KEY` | For AI features | From [OpenAI](https://platform.openai.com) |
-
-### 3. MongoDB
-
-Ensure MongoDB is running, or use MongoDB Atlas.
-
-### 4. Clerk
-
-1. Create an application at [clerk.com](https://clerk.com)
-2. Add your domain (localhost for dev)
-3. Copy the publishable and secret keys to `.env.local`
-
-### 5. Seed Data (Optional)
-
-```bash
-node scripts/seed.js
-```
-
-Creates sample users and posts. **Auth uses Clerk** - sign up at `/signup` to create your account.
-
-### 6. Run Development Server
+First, run the development server:
 
 ```bash
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Routes
+You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-| Path | Description |
-|------|-------------|
-| `/` | Redirects to login or feed |
-| `/login` | Sign in (Clerk) |
-| `/signup` | Create account (Clerk) |
-| `/feed` | Home feed with posts |
-| `/messages` | Chat conversations |
-| `/profile/[id]` | User profile |
-| `/post/[id]` | Single post with comments |
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## API Endpoints
+## Learn More
 
-### Users
-- `GET /api/users/me` - Current user (from Clerk)
-- `GET /api/users/:id` - Get profile
-- `POST /api/users/follow/:id` - Follow/unfollow
-- `GET /api/users/suggested` - Suggested users
+To learn more about Next.js, take a look at the following resources:
 
-### Posts
-- `POST /api/posts` - Create post
-- `GET /api/posts/feed` - Feed (following + own)
-- `GET /api/posts/:id` - Single post
-- `POST /api/posts/like/:id` - Like/unlike
-- `GET /api/posts/user/:userId` - User's posts
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-### Comments
-- `GET /api/comments/:postId` - Get comments
-- `POST /api/comments/:postId` - Add comment
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-### Messages
-- `POST /api/messages` - Send message
-- `GET /api/messages/:userId` - Chat with user
-- `GET /api/messages/conversations` - Chat list
+## Deploy on Vercel
 
-### AI (requires OPENAI_API_KEY)
-- `POST /api/ai/chat` - Chat with AI (body: `{ message }`)
-- `POST /api/ai/generate-post` - Generate post suggestion
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## Design System
-
-The UI follows the "Digital Editorial" philosophy:
-
-- **Colors**: Sleek gray base (#131313) with primary blue (#9ECAFF → #0095F6)
-- **Typography**: Plus Jakarta Sans (headlines), Inter (body)
-- **Layout**: Tonal layering, no 1px borders, glassmorphism nav
-
-## License
-
-MIT
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
