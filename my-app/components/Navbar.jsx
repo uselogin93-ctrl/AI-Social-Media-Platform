@@ -12,6 +12,7 @@ export default function Navbar() {
         <Link href="/" className="text-primary font-bold transition-colors">Home</Link>
         <Link href="/explore" className="text-neutral-400 hover:text-white transition-colors">Explore</Link>
         <Link href="/trending" className="text-neutral-400 hover:text-white transition-colors">Trending</Link>
+        {/* Use Clerk user ID if available */}
       </div>
 
       <div className="flex items-center gap-4 text-neutral-400">

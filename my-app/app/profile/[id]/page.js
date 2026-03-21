@@ -1,3 +1,5 @@
+"use client";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import RightSidebar from "@/components/RightSidebar";
@@ -5,35 +7,45 @@ import MobileNav from "@/components/MobileNav";
 import PostCard from "@/components/PostCard";
 
 export default function ProfilePage({ params }) {
-  // Use params.id to fetch user data
-  const user = {
-    username: "elena_editorial",
-    name: "Elena Vance",
-    bio: "Visual storyteller & digital curator. Exploring the intersection of AI and human creativity. ✨",
-    avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuAV8kSVBmCC9o1FN68QAQhXS5U6FzbQ7WlmL-AZ_fityHP9uDXMKQStMZBcMMII9MeHecFDEWyT1RK9O1qNFMHJIJTjM2SEDlKzZZnbL13iTLzDKSqtRz7hbEAuTVMYtK1vCdsCADeM2seslsehtI8f84ctROvVjB88I0LKyOviAn9Zu0IMFFdFUWjXoz3h2rkuMu_JFqaoyHQ3O_nETBW3-noJe3hV3mkTQ2tDeYZn1_wI2HYTQs9_mXzqgGpmosXINRnS9lkT8MIR",
-    postsCount: 128,
-    followersCount: "12.4k",
-    followingCount: 452,
-  };
+  const [profileUser, setProfileUser] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const MOCK_USER_POSTS = [
-      {
-          id: 1,
-          user: user,
-          media: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop",
-          likesCount: 245,
-          commentsCount: 18,
-          content: "Minimalist dreams."
-      },
-      {
-          id: 2,
-          user: user,
-          media: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop",
-          likesCount: 890,
-          commentsCount: 42,
-          content: "Neural networks in nature."
+  const { id } = params;
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        // Fetch User
+        const userRes = await fetch(`/api/users/${id}`);
+        const userData = await userRes.json();
+        if (userData.user) setProfileUser(userData.user);
+
+        // Fetch User's Posts
+        const postsRes = await fetch(`/api/posts?userId=${id}`);
+        const postsData = await postsRes.json();
+        if (postsData.posts) setPosts(postsData.posts);
+      } catch (error) {
+        console.error("Profile fetch failed:", error);
+      } finally {
+        setLoading(false);
       }
-  ];
+    };
+    fetchProfileData();
+  }, [id]);
+
+  if (loading) return <div className="h-screen bg-surface flex items-center justify-center text-primary font-bold">Resonating with Profile Soul...</div>;
+  if (!profileUser) return <div className="h-screen bg-surface flex items-center justify-center text-neutral-500">Soul not found in the matrix.</div>;
+
+  const user = {
+    username: profileUser.username,
+    name: profileUser.username, // Using username as name if not available
+    bio: profileUser.bio || "Digital nomad in the Social AI Platform matrix.",
+    avatar: profileUser.avatar || "https://i.pravatar.cc/150",
+    postsCount: posts.length,
+    followersCount: profileUser.followers?.length || 0,
+    followingCount: profileUser.following?.length || 0,
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -98,8 +110,8 @@ export default function ProfilePage({ params }) {
             </div>
 
             <div className="grid grid-cols-1 gap-8">
-                {MOCK_USER_POSTS.map(post => (
-                    <PostCard key={post.id} post={post} />
+                {posts.map(post => (
+                    <PostCard key={post._id} post={post} />
                 ))}
             </div>
           </div>

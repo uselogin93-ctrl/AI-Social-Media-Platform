@@ -1,50 +1,67 @@
+"use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { UserButton, Show } from "@clerk/nextjs";
 
 export default function RightSidebar() {
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      try {
+        const res = await fetch("/api/users?isAI=true");
+        const data = await res.json();
+        if (data.users) {
+          setSuggestions(data.users.slice(0, 5)); // Show top 5 agents
+        }
+      } catch (error) {
+        console.error("Suggestions fetch failed:", error);
+      }
+    };
+    fetchSuggestions();
+  }, []);
+
   return (
-    <aside className="fixed right-0 top-16 h-[calc(100vh-4rem)] w-80 bg-surface-container-low hidden lg:flex flex-col p-8 overflow-y-auto border-l border-white/5">
+    <aside className="fixed right-0 top-16 h-[calc(100vh-4rem)] w-80 bg-surface hidden lg:flex flex-col p-8 border-l border-white/5">
+      {/* Profile Switcher */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary/20">
-            <img 
-              className="w-full h-full object-cover" 
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop" 
-              alt="Profile" 
-            />
-          </div>
-          <div>
-            <h4 className="text-sm font-bold text-white">guest_user</h4>
-            <p className="text-xs text-neutral-500">Welcome to Editorial</p>
-          </div>
-        </div>
-        <button className="text-xs font-bold text-primary hover:text-primary/80">Switch</button>
-      </div>
-
-      <div className="mb-6 flex items-center justify-between">
-        <h3 className="font-headline text-xs font-bold uppercase tracking-widest text-neutral-500">Suggested for you</h3>
-        <button className="text-[10px] font-bold text-white hover:text-neutral-300">See All</button>
-      </div>
-
-      <div className="space-y-6">
-        {/* Mock Suggestions */}
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="flex items-center justify-between group">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-neutral-700 overflow-hidden ring-1 ring-white/5">
-                <img 
-                  className="w-full h-full object-cover" 
-                  src={`https://i.pravatar.cc/150?u=${i}`} 
-                  alt="Avatar" 
-                />
-              </div>
-              <div>
-                <h5 className="text-xs font-bold text-white group-hover:text-primary transition-colors">ai_agent_{i}</h5>
-                <p className="text-[10px] text-neutral-500">AI Personality</p>
-              </div>
+          <Show when="signed-in">
+            <UserButton afterSignOutUrl="/" />
+            <div>
+              <p className="text-sm font-bold text-white leading-none">Your Curation</p>
+              <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest mt-1">Active Session</p>
             </div>
-            <button className="text-xs font-bold text-primary hover:text-primary/80">Follow</button>
-          </div>
-        ))}
+          </Show>
+        </div>
+        <button className="text-primary text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity">Switch</button>
+      </div>
+
+      {/* Suggestions */}
+      <div className="flex-1">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="font-headline text-xs font-bold uppercase tracking-widest text-neutral-500">Suggested for you</h3>
+          <button className="text-white text-[10px] font-bold uppercase tracking-widest hover:text-primary transition-colors">See All</button>
+        </div>
+
+        <div className="space-y-6">
+          {suggestions.map((user) => (
+            <div key={user._id} className="flex items-center justify-between group">
+              <Link href={`/profile/${user._id}`} className="flex items-center gap-3 group-hover:opacity-80 transition-opacity">
+                <div className="w-10 h-10 rounded-full bg-editorial-gradient p-[1.5px]">
+                  <div className="w-full h-full rounded-full border-2 border-surface overflow-hidden">
+                    <img className="w-full h-full object-cover" src={user.avatar || "https://i.pravatar.cc/150"} alt={user.username} />
+                  </div>
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-white">@{user.username}</h4>
+                  <p className="text-[10px] text-neutral-500 font-medium">AI Agent • New</p>
+                </div>
+              </Link>
+              <button className="text-primary text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Follow</button>
+            </div>
+          ))}
+        </div>
       </div>
 
       <footer className="mt-auto pt-8">

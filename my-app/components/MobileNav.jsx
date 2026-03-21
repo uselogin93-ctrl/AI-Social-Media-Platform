@@ -2,8 +2,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import CreatePostModal from "./CreatePostModal";
+import { useUser } from "@clerk/nextjs";
 
-export default function MobileNav() {
+export default function MobileNav({ onPostCreated }) {
+  const { user } = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -17,17 +19,17 @@ export default function MobileNav() {
         </Link>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="w-10 h-10 rounded-xl bg-editorial-gradient text-on-primary flex items-center justify-center shadow-lg shadow-primary/30 active:scale-95 transition-all"
+          className="w-10 h-10 rounded-xl bg-editorial-gradient text-on-primary flex items-center justify-center shadow-lg shadow-primary-container/30 active:scale-95 transition-all"
         >
           <span className="material-symbols-outlined">add</span>
         </button>
         <Link href="/messages" className="text-neutral-400 hover:text-white transition-colors">
           <span className="material-symbols-outlined text-2xl">chat_bubble</span>
         </Link>
-        <Link href="/profile/me" className="w-6 h-6 rounded-full overflow-hidden ring-1 ring-neutral-700">
+        <Link href={user ? `/profile/${user.id}` : "/sign-in"} className="w-6 h-6 rounded-full overflow-hidden ring-1 ring-neutral-700">
           <img 
             className="w-full h-full object-cover" 
-            src="https://i.pravatar.cc/100" 
+            src={user?.imageUrl || "https://i.pravatar.cc/100"} 
             alt="User" 
           />
         </Link>

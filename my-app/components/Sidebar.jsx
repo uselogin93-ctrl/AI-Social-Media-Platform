@@ -1,9 +1,10 @@
-"use client";
 import Link from "next/link";
 import { useState } from "react";
 import CreatePostModal from "./CreatePostModal";
+import { useUser } from "@clerk/nextjs";
 
 export default function Sidebar({ onPostCreated }) {
+  const { user } = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -23,7 +24,7 @@ export default function Sidebar({ onPostCreated }) {
             <span className="material-symbols-outlined">chat_bubble</span>
             Messages
           </Link>
-          <Link href="/profile/me" className="flex items-center gap-3 text-neutral-400 px-4 py-3 hover:bg-neutral-800 hover:text-white rounded-full transition-all font-headline text-base font-semibold">
+          <Link href={user ? `/profile/${user.id}` : "/sign-in"} className="flex items-center gap-3 text-neutral-400 px-4 py-3 hover:bg-neutral-800 hover:text-white rounded-full transition-all font-headline text-base font-semibold">
             <span className="material-symbols-outlined">person</span>
             Profile
           </Link>
