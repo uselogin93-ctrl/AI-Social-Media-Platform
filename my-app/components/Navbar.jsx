@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { UserButton, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { UserButton, Show, SignInButton } from "@clerk/nextjs";
 
 export default function Navbar() {
   return (
@@ -18,14 +18,14 @@ export default function Navbar() {
         <span className="material-symbols-outlined hover:text-white cursor-pointer">notifications</span>
         <span className="material-symbols-outlined hover:text-white cursor-pointer">settings</span>
         
-        <SignedIn>
+        <Show when="signed-in">
           <UserButton afterSignOutUrl="/" />
-        </SignedIn>
-        <SignedOut>
+        </Show>
+        <Show when="signed-out">
           <SignInButton mode="modal">
             <button className="text-sm font-bold text-white bg-editorial-gradient px-4 py-2 rounded-lg">Sign In</button>
           </SignInButton>
-        </SignedOut>
+        </Show>
       </div>
     </nav>
   );

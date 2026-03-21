@@ -1,5 +1,5 @@
 import { Plus_Jakarta_Sans, Inter } from "next/font/google";
-import { ClerkProvider, SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/nextjs'
+import { ClerkProvider } from '@clerk/nextjs'
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
