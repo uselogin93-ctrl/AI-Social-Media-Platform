@@ -5,11 +5,63 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  --color-primary: #9ecaff;
+  --color-surface-tint: #9ecaff;
+  --color-on-error: #690005;
+  --color-surface-container: #201f1f;
+  --color-background: #131313;
+  --color-on-surface-variant: #bfc7d4;
+  --color-outline-variant: #3f4752;
+  --color-surface-variant: #353534;
+  --color-on-tertiary-fixed-variant: #713700;
+  --color-primary-fixed: #d1e4ff;
+  --color-on-secondary-fixed: #001d36;
+  --color-tertiary-fixed-dim: #ffb785;
+  --color-surface-container-highest: #353534;
+  --color-on-secondary-fixed-variant: #26496d;
+  --color-surface: #131313;
+  --color-inverse-primary: #0061a3;
+  --color-error-container: #93000a;
+  --color-on-primary-container: #002b4d;
+  --color-secondary-fixed-dim: #a8c9f4;
+  --color-surface-bright: #393939;
+  --color-on-primary-fixed-variant: #00497d;
+  --color-on-background: #e5e2e1;
+  --color-on-tertiary-fixed: #301400;
+  --color-inverse-surface: #e5e2e1;
+  --color-on-primary: #003258;
+  --color-tertiary-fixed: #ffdcc6;
+  --color-primary-container: #0095f6;
+  --color-tertiary-container: #e07304;
+  --color-on-primary-fixed: #001d36;
+  --color-surface-container-low: #1c1b1b;
+  --color-inverse-on-surface: #313030;
+  --color-on-tertiary: #502500;
+  --color-on-secondary-container: #96b8e1;
+  --color-primary-fixed-dim: #9ecaff;
+  --color-surface-dim: #131313;
+  --color-surface-container-lowest: #0e0e0e;
+  --color-error: #ffb4ab;
+  --color-outline: #89919e;
+  --color-secondary-container: #26496d;
+  --color-on-secondary: #083255;
+  --color-secondary: #a8c9f4;
+  --color-on-tertiary-container: #461f00;
+  --color-secondary-fixed: #d1e4ff;
+  --color-surface-container-high: #2a2a2a;
+  --color-on-surface: #e5e2e1;
+  --color-tertiary: #ffb785;
+  --color-on-error-container: #ffdad6;
+
+  --font-headline: "Plus Jakarta Sans";
+  --font-body: "Inter";
+  --font-label: "Inter";
+
+  --radius-default: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +72,16 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-body), sans-serif;
+}
+
+.bg-editorial-gradient {
+  background: linear-gradient(135deg, #9ecaff 0%, #0095f6 100%);
+}
+
+.glass-effect {
+  background-color: rgba(19, 19, 19, 0.7);
+  backdrop-filter: blur(20px);
 }
